@@ -1,50 +1,36 @@
-from flask import Flask, request, jsonify
-from flask_cors import CORS
+import streamlit as st
 import pandas as pd
 import joblib
 
-app = Flask(__name__)
-CORS(app)
+st.title("Indian Economy ML Dashboard")
+
+data = pd.read_excel("Indian_Economy.xlsx")
 
 model = joblib.load("economy.pkl")
 
-data = pd.read_excel("Indian_Economy.xlsx")
-yearly_data = data.groupby("Year")[["GDP_Lakh_Crore", "Imports_Crore"]].sum().sort_index()
+st.write("### Economy Data")
+st.dataframe(data)
 
+st.write("### Predict Imports")
 
-@app.route("/predict", methods=["POST"])
-def predict():
+year = st.number_input("Enter Year", 2020, 2100, 2039)
 
-    value = request.json["year"]
+if st.button("Predict Imports"):
 
-    x = pd.DataFrame({
-        "Year": [value]
-    })
+    x = pd.DataFrame({"Year": [year]})
 
     prediction = model.predict(x)
 
-    return jsonify({
-        "prediction": float(prediction[0])
-    })
+    st.success(f"Predicted Imports: {prediction[0]:,.2f} Crore")
 
+st.write("### GDP by Year")
 
-@app.route("/data")
-def get_data():
+gdp = data.groupby("Year")["GDP_Lakh_Crore"].sum()
 
-    return jsonify({
-        "gdp": float(data["GDP_Lakh_Crore"].sum()),
-        "imports": float(data["Imports_Crore"].sum()),
-        "exports": float(data["Exports_Crore"].sum()),
-        "years": [
-            {
-                "year": int(year),
-                "gdp": float(values["GDP_Lakh_Crore"]),
-                "imports": float(values["Imports_Crore"]),
-            }
-            for year, values in yearly_data.iterrows()
-        ],
-    })
+st.line_chart(gdp)
 
+st.write("### Imports by Year")
 
-if __name__ == "__main__":
-    app.run(debug=True)
+imports = data.groupby("Year")["Imports_Crore"].sum()
+
+st.line_chart(imports)
