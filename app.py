@@ -8,12 +8,9 @@ st.set_page_config(
     layout="wide"
 )
 
-# Load files
 model = joblib.load("economy.pkl")
 economy = pd.read_excel("Indian_Economy.xlsx")
 
-
-# CSS only
 st.markdown("""
 <style>
 
@@ -22,83 +19,104 @@ st.markdown("""
 }
 
 .block-container {
-    max-width: 1080px;
-    padding-top: 0;
+    max-width: 1200px;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
 }
 
-header[data-testid="stHeader"] {
-    background-color: #173f35;
-}
-
-.title {
-    color: #202a27;
-    font-size: 30px;
-    font-weight: 650;
+.main-title {
+    font-size: 36px;
+    font-weight: 700;
+    color: #30343f;
+    margin-bottom: 5px;
 }
 
 .subtitle {
-    color: #707b76;
-    font-size: 14px;
+    font-size: 16px;
+    color: #7b827f;
+    margin-bottom: 35px;
 }
 
-.section {
-    color: #638071;
-    font-size: 10px;
+.section-title {
+    font-size: 13px;
     font-weight: 700;
-    letter-spacing: 1px;
+    color: #638071;
+    letter-spacing: 1.5px;
+    margin-bottom: 10px;
 }
 
-div[data-testid="stMetric"] {
+.card {
     background-color: white;
-    border: 1px solid #e3e8e4;
-    border-radius: 7px;
-    padding: 20px;
+    padding: 25px;
+    border-radius: 10px;
+    border: 1px solid #e2e7e3;
+    min-height: 150px;
 }
 
-div[data-testid="stMetricValue"] {
+.card-title {
+    color: #59635e;
+    font-size: 15px;
+}
+
+.card-value {
     color: #35423c;
+    font-size: 30px;
+    font-weight: 600;
+    margin-top: 10px;
 }
 
-div[data-testid="stMetricLabel"] {
-    color: #53615a;
+.card-text {
+    color: #8a918d;
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+.result {
+    background-color: #e0f3e7;
+    border-radius: 10px;
+    padding: 25px;
+    border: 1px solid #cfe7d7;
+}
+
+.result-title {
+    color: #16833d;
+    font-size: 16px;
+}
+
+.result-value {
+    color: #35423c;
+    font-size: 35px;
+    font-weight: 600;
+    margin-top: 10px;
 }
 
 .stButton > button {
-    background-color: #173f35;
+    background-color: #1d5948;
     color: white;
     border: none;
-    border-radius: 5px;
-    width: 100%;
+    border-radius: 6px;
+    padding: 10px 25px;
+    font-size: 16px;
+    font-weight: 600;
 }
 
 .stButton > button:hover {
-    background-color: #235546;
+    background-color: #26725d;
     color: white;
 }
 
-.result-box {
-    background-color: white;
-    border: 1px solid #e3e8e4;
-    border-radius: 7px;
-    padding: 25px;
-    margin-top: 10px;
+div[data-testid="stNumberInput"] input {
+    background-color: #eef1f5;
 }
 
 </style>
 """, unsafe_allow_html=True)
 
 
-# Top heading
-st.markdown("### 🇮🇳 Indian Economy ML")
-st.caption("Python Model • Economy data loaded")
+# Header
 
 st.markdown(
-    '<p class="section">ECONOMIC INDICATORS</p>',
-    unsafe_allow_html=True
-)
-
-st.markdown(
-    '<div class="title">Indian Economy ML Dashboard</div>',
+    '<div class="main-title">Indian Economy ML Dashboard</div>',
     unsafe_allow_html=True
 )
 
@@ -107,59 +125,63 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-st.write("")
 
+# Economic indicators
 
-# Calculate totals
+st.markdown(
+    '<div class="section-title">ECONOMIC INDICATORS</div>',
+    unsafe_allow_html=True
+)
+
 gdp_total = economy["GDP_Lakh_Crore"].sum()
 imports_total = economy["Imports_Crore"].sum()
 exports_total = economy["Exports_Crore"].sum()
 
-
-# Metric cards
 col1, col2, col3 = st.columns(3)
 
 with col1:
-    st.metric(
-        label="GDP",
-        value=f"{gdp_total:,.2f}",
-        help="Total GDP in the dataset"
-    )
-    st.caption("Total in dataset, Lakh Crore")
+    st.markdown(f"""
+    <div class="card">
+        <div class="card-title">GDP</div>
+        <div class="card-value">{gdp_total:,.2f}</div>
+        <div class="card-text">Total in dataset, Lakh Crore</div>
+    </div>
+    """, unsafe_allow_html=True)
 
 with col2:
-    st.metric(
-        label="Imports",
-        value=f"{imports_total:,.2f}",
-        help="Total Imports in the dataset"
-    )
-    st.caption("Total in dataset, Crore")
+    st.markdown(f"""
+    <div class="card">
+        <div class="card-title">Imports</div>
+        <div class="card-value">{imports_total:,.2f}</div>
+        <div class="card-text">Total in dataset, Crore</div>
+    </div>
+    """, unsafe_allow_html=True)
 
 with col3:
-    st.metric(
-        label="Exports",
-        value=f"{exports_total:,.2f}",
-        help="Total Exports in the dataset"
-    )
-    st.caption("Total in dataset, Crore")
+    st.markdown(f"""
+    <div class="card">
+        <div class="card-title">Exports</div>
+        <div class="card-value">{exports_total:,.2f}</div>
+        <div class="card-text">Total in dataset, Crore</div>
+    </div>
+    """, unsafe_allow_html=True)
 
 
 st.write("")
 
 
 # Charts
+
 col1, col2 = st.columns(2)
 
 with col1:
 
     st.markdown(
-        '<p class="section">TREND</p>',
+        '<div class="section-title">TREND</div>',
         unsafe_allow_html=True
     )
 
-    st.subheader("GDP by year")
-
-    st.caption("Lakh Crore")
+    st.subheader("GDP by Year")
 
     gdp_data = economy.groupby("Year")["GDP_Lakh_Crore"].sum()
 
@@ -169,13 +191,11 @@ with col1:
 with col2:
 
     st.markdown(
-        '<p class="section">TRADE</p>',
+        '<div class="section-title">TRADE</div>',
         unsafe_allow_html=True
     )
 
-    st.subheader("Imports by year")
-
-    st.caption("Crore")
+    st.subheader("Imports by Year")
 
     imports_data = economy.groupby("Year")["Imports_Crore"].sum()
 
@@ -185,41 +205,42 @@ with col2:
 st.write("")
 
 
-# Prediction section
-col1, col2 = st.columns([1.1, 0.9])
+# Prediction
+
+col1, col2 = st.columns([1, 1])
 
 with col1:
 
     st.markdown(
-        '<p class="section">MACHINE LEARNING</p>',
+        '<div class="section-title">MACHINE LEARNING</div>',
         unsafe_allow_html=True
     )
 
-    st.subheader("Predict imports")
+    st.header("Predict Imports")
 
-    st.caption(
+    st.write(
         "Enter a year to get an estimate from the trained model."
     )
 
     year = st.number_input(
-        "Year",
+        "Enter Year",
         min_value=1000,
         max_value=9999,
-        value=2025,
+        value=2039,
         step=1
     )
 
-    predict_button = st.button("Predict Imports →")
+    predict = st.button("Predict Imports →")
 
 
 with col2:
 
     st.markdown(
-        '<p class="section">PREDICTION RESULT</p>',
+        '<div class="section-title">PREDICTION RESULT</div>',
         unsafe_allow_html=True
     )
 
-    if predict_button:
+    if predict:
 
         input_data = pd.DataFrame({
             "Year": [year]
@@ -229,28 +250,27 @@ with col2:
 
         result = float(prediction[0])
 
-        st.success(
-            f"Prediction for {int(year)}"
-        )
+        st.markdown(f"""
+        <div class="result">
+            <div class="result-title">
+                Prediction for {int(year)}
+            </div>
+            <div class="result-value">
+                {result:,.2f} Crore
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
 
-        st.metric(
-            "Predicted Imports",
-            f"{result:,.2f} Crore"
-        )
-
+        st.write("")
         st.caption(
-            "Predicted Imports_Crore using the trained "
-            "Linear Regression model."
+            "Predicted Imports_Crore using the trained Linear Regression model."
         )
 
     else:
 
-        st.info(
-            "Enter a year and click Predict Imports."
-        )
+        st.info("Enter a year and click Predict Imports.")
 
 
-# Footer
 st.write("")
 
 st.caption("Indian Economy ML | Dashboard")
