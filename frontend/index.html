@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#173f35">
+  <title>Indian Economy ML Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#main" aria-label="Indian Economy dashboard home">
+      <span class="brand-mark" aria-hidden="true">IE</span>
+      <span>Indian Economy <span class="brand-light">ML</span></span>
+    </a>
+    <span class="connection-status"><span class="status-dot"></span> Flask API</span>
+  </header>
+
+  <main id="main" class="page-content">
+    <section class="page-heading" aria-labelledby="page-title">
+      <div>
+        <p class="eyebrow">ECONOMIC INDICATORS</p>
+        <h1 id="page-title">Indian Economy ML Dashboard</h1>
+        <p class="intro">Economic data and machine-learning imports predictions.</p>
+      </div>
+      <p id="data-status" class="data-status" role="status">Loading economy data...</p>
+    </section>
+
+    <section class="metrics" aria-label="Economy data totals">
+      <article class="metric-card gdp-card">
+        <div class="metric-top"><span class="metric-label">GDP</span><span class="metric-symbol" aria-hidden="true">G</span></div>
+        <p id="gdp-value" class="metric-value">--</p>
+        <p class="metric-caption">Total in dataset, Lakh Crore</p>
+      </article>
+      <article class="metric-card imports-card">
+        <div class="metric-top"><span class="metric-label">Imports</span><span class="metric-symbol" aria-hidden="true">I</span></div>
+        <p id="imports-value" class="metric-value">--</p>
+        <p class="metric-caption">Total in dataset, Crore</p>
+      </article>
+      <article class="metric-card exports-card">
+        <div class="metric-top"><span class="metric-label">Exports</span><span class="metric-symbol" aria-hidden="true">E</span></div>
+        <p id="exports-value" class="metric-value">--</p>
+        <p class="metric-caption">Total in dataset, Crore</p>
+      </article>
+    </section>
+
+    <section class="charts" aria-label="Yearly economic trends">
+      <article class="panel chart-panel">
+        <div class="panel-heading">
+          <div><p class="eyebrow">TREND</p><h2>GDP by year</h2></div>
+          <span class="unit-label">Lakh Crore</span>
+        </div>
+        <div id="gdp-chart" class="bar-chart" aria-label="GDP by year"></div>
+      </article>
+      <article class="panel chart-panel">
+        <div class="panel-heading">
+          <div><p class="eyebrow">TRADE</p><h2>Imports by year</h2></div>
+          <span class="unit-label">Crore</span>
+        </div>
+        <div id="imports-chart" class="bar-chart imports-chart" aria-label="Imports by year"></div>
+      </article>
+    </section>
+
+    <section class="workspace" aria-label="Imports prediction">
+      <div class="panel prediction-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">MACHINE LEARNING</p>
+            <h2>Predict imports</h2>
+            <p class="panel-description">Enter a year to get an estimate from the trained model.</p>
+          </div>
+          <span class="panel-icon" aria-hidden="true">&gt;</span>
+        </div>
+
+        <form id="prediction-form">
+          <label for="year">Year</label>
+          <div class="form-row">
+            <input id="year" name="year" type="number" inputmode="numeric" min="1000" max="9999" step="1" placeholder="For example, 2025" required>
+            <button id="predict-button" type="submit">Predict Imports <span aria-hidden="true">-&gt;</span></button>
+          </div>
+        </form>
+      </div>
+
+      <aside class="panel result-panel" aria-live="polite" aria-atomic="true">
+        <div class="result-heading">
+          <div>
+            <p class="eyebrow">PREDICTION RESULT</p>
+            <h2 id="result-title">Ready when you are</h2>
+          </div>
+          <span class="result-mark">INR</span>
+        </div>
+        <p id="result-message" class="result-message">Your Imports_Crore prediction will appear here.</p>
+        <div class="result-divider"></div>
+        <p class="result-footnote">The estimate comes directly from the Python model API.</p>
+      </aside>
+    </section>
+
+    <footer class="page-footer">Indian Economy ML <span>|</span> Dashboard</footer>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
